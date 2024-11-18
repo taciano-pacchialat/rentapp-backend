@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class UserManager(BaseUserManager):
     def create_user(self, email, dni, password=None):
@@ -30,7 +31,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
-    dni = models.IntegerField(max_length=8, unique=True)
+    dni = models.IntegerField(validators=[
+        MinValueValidator(999999),
+        MaxValueValidator(100000000)
+    ], unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
