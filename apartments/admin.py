@@ -1,3 +1,32 @@
 from django.contrib import admin
+from .models import Apartment, ApartmentImage
 
-# Register your models here.
+class ApartmentImageInline(admin.TabularInline):
+    model = ApartmentImage
+    extra = 1
+
+@admin.register(Apartment)
+class ApartmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'owner', 'price', 'rating')
+    list_filter = ('has_parking', 'has_pets', 'has_pool', 'has_gym', 'floor', 'rooms', 'bathrooms')
+    search_fields = ('name', 'owner__email', 'description')
+    inlines = [ApartmentImageInline]
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'owner', 'price', 'expenses', 'rating')
+        }),
+        ('Details', {
+            'fields': ('description', 'floor', 'letter', 'bathrooms', 'rooms', 'additional_info')
+        }),
+        ('Amenities', {
+            'fields': ('has_parking', 'has_pets', 'has_pool', 'has_gym')
+        }),
+        ('Images', {
+            'fields': ('images',)
+        }),
+    )
+    readonly_fields = ('rating',)
+
+@admin.register(ApartmentImage)
+class ApartmentImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'apartment', 'image')
