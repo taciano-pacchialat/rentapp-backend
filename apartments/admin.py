@@ -21,9 +21,6 @@ class ApartmentAdmin(admin.ModelAdmin):
         ('Amenities', {
             'fields': ('has_parking', 'has_pets', 'has_pool', 'has_gym')
         }),
-        ('Images', {
-            'fields': ('images',)
-        }),
     )
     readonly_fields = ('rating',)
 
