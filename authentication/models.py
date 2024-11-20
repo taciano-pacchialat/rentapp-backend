@@ -4,13 +4,16 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, dni, password=None):
+    def create_user(self, name, email, dni, password=None):
+        if not name:
+            raise ValueError('Users must have a name')
         if not email:
             raise ValueError('Users must have an email address')
         if not dni:
             raise ValueError('Users must have a DNI number')
 
         user = self.model(
+            name=name,
             email=self.normalize_email(email),
             dni=dni,
         )
@@ -18,9 +21,10 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, dni, password=None):
+    def create_superuser(self, name, email, dni, password=None):
         user = self.create_user(
             email,
+            name=name,
             password=password,
             dni=dni,
         )
@@ -31,6 +35,17 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
+    name = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[A-Z][a-zA-Z ]*(?: [A-Z][a-zA-Z ]*)* [A-Z][a-zA-Z ]*(?: [A-Z][a-zA-Z ]*)*$',
+                message='Name must be alphabetic',
+                code='invalid_name'
+            )
+        ]
+    )
     email = models.EmailField(unique=True)
     dni = models.IntegerField(validators=[
         RegexValidator(

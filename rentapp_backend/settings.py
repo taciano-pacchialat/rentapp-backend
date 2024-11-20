@@ -34,16 +34,42 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'authentication.User'
 
 INSTALLED_APPS = [
+    'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'rest_framework.authtoken',
     'apartments',
     'authentication',
+]
+
+# Para desarrollo 
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+  'authorization',
+    'content-type',
+    'accept',
+    'origin',
+    'x-csrftoken',
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 MEDIA_URL = '/media/'
@@ -59,6 +85,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
