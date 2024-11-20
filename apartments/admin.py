@@ -13,7 +13,7 @@ class ApartmentAdmin(admin.ModelAdmin):
     inlines = [ApartmentImageInline]
     fieldsets = (
         (None, {
-            'fields': ('name', 'owner', 'price', 'expenses', 'rating')
+            'fields': ('name', 'owner', 'price', 'street_address', 'expenses', 'rating')
         }),
         ('Details', {
             'fields': ('description', 'floor', 'letter', 'bathrooms', 'rooms', 'additional_info')
@@ -22,7 +22,6 @@ class ApartmentAdmin(admin.ModelAdmin):
             'fields': ('has_parking', 'has_pets', 'has_pool', 'has_gym')
         }),
     )
-    readonly_fields = ('rating',)
 
 @admin.register(ApartmentImage)
 class ApartmentImageAdmin(admin.ModelAdmin):

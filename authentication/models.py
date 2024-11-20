@@ -1,7 +1,7 @@
 from django.db import models
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
     def create_user(self, email, dni, password=None):
@@ -14,7 +14,6 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             dni=dni,
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -26,14 +25,19 @@ class UserManager(BaseUserManager):
             dni=dni,
         )
         user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     dni = models.IntegerField(validators=[
-        MinValueValidator(999999),
-        MaxValueValidator(100000000)
+        RegexValidator(
+            regex=r'^\d{7,8}$',
+            message='DNI must be 7 or 8 digits',
+            code='invalid_dni'
+        )
     ], unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
