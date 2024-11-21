@@ -7,6 +7,7 @@ class ApartmentImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
 class ApartmentSerializer(serializers.ModelSerializer):
+    images = ApartmentImageSerializer(source='apartment_images', many=True, read_only=True)
     class Meta:
         model = Apartment
         fields = '__all__'

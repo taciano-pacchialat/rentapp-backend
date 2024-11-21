@@ -12,7 +12,6 @@ class Apartment(models.Model):
     has_pets = models.BooleanField(default=False)
     has_pool = models.BooleanField(default=False)
     has_gym = models.BooleanField(default=False)
-    images = models.JSONField(default=list)  
     floor = models.IntegerField()
     letter = models.CharField(max_length=1)
     bathrooms = models.IntegerField()

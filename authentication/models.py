@@ -23,8 +23,8 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, name, email, dni, password=None):
         user = self.create_user(
-            email,
             name=name,
+            email=email,
             password=password,
             dni=dni,
         )
@@ -62,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['dni']
+    REQUIRED_FIELDS = ['name', 'dni']
 
     def __str__(self):
         return self.email
