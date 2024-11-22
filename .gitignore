@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+rentapp_venv/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# Django migrations
+**/migrations/*
+
+# If you are using MySQL, PostgreSQL, or SQLite
+*.db
+*.sqlite3
+
+# If you are using PyCharm
+.idea/
+
+# If you are using VSCode
+.vscode/
+
+# If you are using Jupyter Notebook
+.ipynb_checkpoints
+
+# If you are using macOS
+.DS_Store
+
+# If you are using Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python virtual environment
+rentapp_venv/
+
+# pipenv
+Pipfile.lock
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env.gitignore
