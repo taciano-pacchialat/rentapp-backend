@@ -11,11 +11,14 @@ class UserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         if not dni:
             raise ValueError('Users must have a DNI number')
+        if not phone_number:
+            raise ValueError('Users must have a phone number')
 
         user = self.model(
             name=name,
             email=self.normalize_email(email),
             dni=dni,
+            phone_number=phone_number,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -27,6 +30,8 @@ class UserManager(BaseUserManager):
             email=email,
             password=password,
             dni=dni,
+            phone_number=phone_number,
+
         )
         user.is_admin = True
         user.is_staff = True
@@ -54,6 +59,16 @@ class User(AbstractBaseUser, PermissionsMixin):
             code='invalid_dni'
         )
     ], unique=True)
+    phone_number = models.CharField(
+        max_length=15,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?\d{9,15}$',
+                message='Phone number must be entered in the format: "+999999999". Up to 15 digits allowed.'
+            )
+        ]
+    )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)  
@@ -62,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'dni']
+    REQUIRED_FIELDS = ['name', 'dni', 'phone_number']
 
     def __str__(self):
         return self.email
