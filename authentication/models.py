@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
-    def create_user(self, name, email, dni, password=None):
+    def create_user(self, name, email, phone_number, dni, password=None):
         if not name:
             raise ValueError('Users must have a name')
         if not email:
@@ -24,7 +24,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, name, email, dni, password=None):
+    def create_superuser(self, name, email, dni, phone_number, password=None):
         user = self.create_user(
             name=name,
             email=email,
