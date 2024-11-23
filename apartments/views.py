@@ -10,7 +10,7 @@ class IsOwnerOrReadOnly(BasePermission):
         return obj.owner == request.user
 
 class ApartmentViewSet(viewsets.ModelViewSet):
-    queryset = Apartment.objects.all()
+    queryset = Apartment.objects.all().select_related('owner')
     serializer_class = ApartmentSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
