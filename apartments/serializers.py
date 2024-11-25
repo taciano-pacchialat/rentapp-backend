@@ -20,10 +20,14 @@ class ApartmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        images_data = validated_data.pop('images', [])
-        if len(images_data) > 20:
-            raise serializers.ValidationError("Maximum 20 images allowed.")
+        # Extract images from the request
+        request = self.context.get('request')
+        images = request.FILES.getlist('images')
+
+        # Create the Apartment instance
         apartment = Apartment.objects.create(**validated_data)
-        for image_data in images_data:
-            ApartmentImage.objects.create(apartment=apartment, **image_data)
+
+        # Create ApartmentImage instances
+        for image in images:
+            ApartmentImage.objects.create(apartment=apartment, image=image)
         return apartment

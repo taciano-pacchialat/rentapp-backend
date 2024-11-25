@@ -11,7 +11,7 @@ __pycache__/
 env/
 venv/
 ENV/
-env.bak/
+env.bak/  
 venv.bak/
 rentapp_venv/
 
